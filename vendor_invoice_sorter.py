@@ -65,13 +65,13 @@ def move_invoice(invoice: Path, destination: Path, dry_run: bool = False) -> Non
     """Move *invoice* into *destination* (relative to SOURCE_DIR)."""
 
     target_dir = SOURCE_DIR / destination
-    target_dir.mkdir(parents=True, exist_ok=True)
     target_path = target_dir / invoice.name
 
     if dry_run:
         print(f"[DRY-RUN] Would move '{invoice}' -> '{target_path}'")
         return
 
+    target_dir.mkdir(parents=True, exist_ok=True)
     print(f"Moving '{invoice}' -> '{target_path}'")
     shutil.move(str(invoice), str(target_path))
 
