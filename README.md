@@ -84,6 +84,36 @@ python qrgenerator.py
 The script will create the image and print the saved path so you can open it right
 away.
 
+### `inventory_reorder_report.py`
+Highlight products that have dipped below their reorder point in an inventory
+snapshot CSV.
+
+* **Input expectations:** the CSV must provide at least `Item`, `On Hand`, and
+  `Reorder Point` columns (case-insensitive; spaces/underscores are ignored when
+  matching headers). Optional columns such as `Vendor`, `Category`, `SKU`, or
+  `Description` are displayed when available.
+* Quantities must be numeric and zero-or-greater. Rows missing any required
+  values are skipped with a validation message so you can correct the source
+  data.
+* You can narrow the report with `--vendor` and/or `--category` filters. Provide
+  the flags multiple times to include several values.
+
+Typical runs look like:
+
+```bash
+python inventory_reorder_report.py inventory_snapshot.csv
+
+python inventory_reorder_report.py inventory_snapshot.csv \
+  --vendor "Acme Co" --vendor "Widget Works" \
+  --category "Networking" \
+  --export reorder.md
+```
+
+The script prints a severity-sorted table showing on-hand quantities, reorder
+points, and computed shortages. When `--export` is supplied the table is written
+to CSV (`.csv`) or Markdown (`.md`/`.markdown`) so you can hand it to purchasing
+or paste it into documentation.
+
 ## Getting Started
 
 1. Create and activate a virtual environment (optional but recommended).
