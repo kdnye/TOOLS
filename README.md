@@ -23,6 +23,24 @@ Quickly build a high-error-correction QR code using the `qrcode` Python package.
 * Adjust `box_size`, `border`, or `error_correction` to tweak output quality.
 * Saves the generated PNG to `file_path`; point it at your preferred destination.
 
+### `csv_mail_merge.py`
+Generate individualized text drafts from a CSV file and a simple text template.
+
+* Each CSV row must include an `id` column that uniquely identifies the record.
+* Template placeholders use Python `str.format` syntax (e.g., `{name}`, `{address}`).
+* Empty or missing fields are reported and skipped so you can fill the gaps.
+
+Run it with:
+
+```bash
+python csv_mail_merge.py --csv contacts.csv --template letter.txt --output-dir out/
+```
+
+`contacts.csv` should include columns for every placeholder used in `letter.txt`. The
+script writes one text file per row to `out/` named after the `id` value
+(`out/<id>.txt`) and prints a summary detailing generated drafts and any rows skipped
+for missing data.
+
 Dependencies are tracked in `requirements.txt`. It currently installs
 [`qrcode[pil]`](https://pypi.org/project/qrcode/) for `qrgenerator.py`; `mass_print.py`
 only needs the Python standard library on Windows. Install everything with:
