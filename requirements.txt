@@ -1,0 +1,3 @@
+# Dependencies for the toolbelt scripts
+# mass_print.py relies only on the Python standard library on Windows.
+qrcode[pil]>=7.4
