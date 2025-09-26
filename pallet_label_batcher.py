@@ -108,6 +108,7 @@ def load_rows(csv_path: Path) -> Iterable[Dict[str, str]]:
             if not pallet_id:
                 print(f"Skipping row {idx}: missing pallet_id column.", file=sys.stderr)
                 continue
+            normalised["pallet_id"] = pallet_id
             yield normalised
 
 

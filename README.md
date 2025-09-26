@@ -90,7 +90,8 @@ away.
 Generate thermal-printer-friendly pallet labels that combine a QR code with text
 metadata sourced from a CSV file.
 
-* Each CSV row must include a `pallet_id` column; additional columns such as
+* Each CSV row must include a `pallet_id` column (or a legacy `pallet` column,
+  which the tool transparently maps to `pallet_id`); additional columns such as
   `destination` or `contents` are inserted into the label when referenced in the
   default template.
 * Produces both PNG and PDF versions sized for 4x6" printers by default. Adjust
