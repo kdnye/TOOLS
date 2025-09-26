@@ -31,6 +31,32 @@ only needs the Python standard library on Windows. Install everything with:
 pip install -r requirements.txt
 ```
 
+### `timesheet_weekly_summary.py`
+Roll up CSV-based timesheet entries into ISO calendar week buckets per
+project/client.
+
+* **Input expectations:** the CSV must contain one row per entry with columns for
+  the entry date, project/client label, and recorded hours. By default the script
+  looks for `Date`, `Project`, and `Hours`, but you can point it at custom names
+  with `--columns DATE PROJECT HOURS`.
+* Dates are normalised using common ISO and numeric formats (e.g. `2024-04-03`,
+  `03/04/2024`). Invalid or missing dates/hours are skipped and reported to
+  `stderr` so you can fix the original file.
+* Hours must be numeric and non-negative. Rows that do not meet that criteria are
+  ignored for the summary and counted in the validation output.
+
+Run the tool with:
+
+```bash
+python timesheet_weekly_summary.py timesheet.csv \
+  --columns Date Project Hours \
+  --export summary.md
+```
+
+`--export` is optional; when supplied the extension controls the output format
+(`.csv` or `.md`). The terminal output always prints a plain-text table so you can
+spot-check totals quickly.
+
 Run `qrgenerator.py` with:
 
 ```bash
