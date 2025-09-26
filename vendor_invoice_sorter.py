@@ -73,7 +73,7 @@ def move_invoice(invoice: Path, destination: Path, dry_run: bool = False) -> Non
 
     target_dir.mkdir(parents=True, exist_ok=True)
     print(f"Moving '{invoice}' -> '{target_path}'")
-    shutil.move(str(invoice), str(target_path))
+    shutil.move(invoice, target_path)
 
 
 def main() -> None:
