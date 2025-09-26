@@ -42,8 +42,10 @@ script writes one text file per row to `out/` named after the `id` value
 for missing data.
 
 Dependencies are tracked in `requirements.txt`. It currently installs
-[`qrcode[pil]`](https://pypi.org/project/qrcode/) for `qrgenerator.py`; `mass_print.py`
-only needs the Python standard library on Windows. Install everything with:
+[`qrcode[pil]`](https://pypi.org/project/qrcode/) and
+[`Pillow`](https://pypi.org/project/Pillow/) for the QR/label tooling;
+`mass_print.py` only needs the Python standard library on Windows. Install
+everything with:
 
 ```bash
 pip install -r requirements.txt
@@ -84,6 +86,52 @@ python qrgenerator.py
 The script will create the image and print the saved path so you can open it right
 away.
 
+### `pallet_label_batcher.py`
+Generate thermal-printer-friendly pallet labels that combine a QR code with text
+metadata sourced from a CSV file.
+
+* Each CSV row must include a `pallet_id` column; additional columns such as
+  `destination` or `contents` are inserted into the label when referenced in the
+  default template.
+* Produces both PNG and PDF versions sized for 4x6" printers by default. Adjust
+  clarity or sizing with `--dpi` (e.g., `--dpi 300` for higher-resolution
+  printers).
+* Override the default layout with `--template path/to/layout.json`. The template
+  file is JSON with three optional sections:
+
+  ```json
+  {
+    "label": {"width_in": 4, "height_in": 6},
+    "qr": {
+      "position": [900, 120],
+      "size_in": 2.25,
+      "box_size": 12,
+      "border": 4
+    },
+    "text_blocks": [
+      {
+        "text": "Pallet: {pallet_id}",
+        "position": [80, 80],
+        "font_size": 72
+      },
+      {
+        "text": "Dest: {destination}\nNotes: {contents}",
+        "position": [80, 220],
+        "font_size": 42,
+        "max_width": 650
+      }
+    ]
+  }
+  ```
+
+Run the batcher with:
+
+```bash
+python pallet_label_batcher.py --csv pallets.csv --output-dir labels/ --dpi 300
+```
+
+Each pallet produces `labels/<pallet_id>.png` and `labels/<pallet_id>.pdf`.
+
 ## Getting Started
 
 1. Create and activate a virtual environment (optional but recommended).
@@ -93,9 +141,9 @@ away.
    pip install -r requirements.txt
    ```
 
-   This pulls in `qrcode[pil]` (version 7.4 or newer) for QR generation. If
-   reproducibility is critical for your workflow, feel free to pin an exact version in
-   `requirements.txt`.
+   This pulls in `qrcode[pil]` (version 7.4 or newer) and Pillow for QR/label
+   generation. If reproducibility is critical for your workflow, feel free to pin an
+   exact version in `requirements.txt`.
 
 3. Tweak the script constants for your current task and run the script with Python 3.9+
    (Windows required for `mass_print.py`).
