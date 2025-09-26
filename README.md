@@ -23,6 +23,23 @@ Quickly build a high-error-correction QR code using the `qrcode` Python package.
 * Adjust `box_size`, `border`, or `error_correction` to tweak output quality.
 * Saves the generated PNG to `file_path`; point it at your preferred destination.
 
+### `vendor_invoice_sorter.py`
+Rules-driven sorter that shuttles PDF and Excel invoices into vendor folders.
+
+* Point `SOURCE_DIR` at the directory that holds newly downloaded invoices.
+* Populate `VENDOR_RULES` with `pattern: destination` mappings. Patterns are
+  evaluated in order; glob patterns (default) match via `fnmatch` and regex
+  patterns begin with `"re:"` and are matched case-insensitively.
+* Destination folders are created automatically beneath `SOURCE_DIR`.
+* Unmatched files are reported to stdout so you can extend `VENDOR_RULES`.
+* Preview the planned moves with:
+
+  ```bash
+  python vendor_invoice_sorter.py --dry-run
+  ```
+
+  Omit `--dry-run` to actually relocate the files.
+
 Dependencies are tracked in `requirements.txt`. It currently installs
 [`qrcode[pil]`](https://pypi.org/project/qrcode/) for `qrgenerator.py`; `mass_print.py`
 only needs the Python standard library on Windows. Install everything with:
