@@ -41,6 +41,29 @@ script writes one text file per row to `out/` named after the `id` value
 (`out/<id>.txt`) and prints a summary detailing generated drafts and any rows skipped
 for missing data.
 
+### `shipment_manifest_reconciler.py`
+Reconcile expected shipment manifests against scanned intake results.
+
+* **Input expectations:** both CSV files must include `order_id`, `sku`, and
+  `quantity` columns. Quantities should be non-negative integers; duplicate order/SKU
+  rows are automatically summed.
+* The terminal output highlights the per-SKU matched, short, and overage counts plus
+  totals for a quick audit.
+* Supply `--export path/to/output.csv` to save the reconciliation as CSV. A Markdown
+  summary with the same filename stem will be generated alongside it.
+
+Example usage:
+
+```bash
+python shipment_manifest_reconciler.py \
+  --expected expected_manifest.csv \
+  --scanned scanned_manifest.csv \
+  --export reconciliation.csv
+```
+
+The exit code is `0` when everything matches and `2` if shortages or overages remain
+after reconciliation, which makes the tool easy to plug into automated checks.
+
 Dependencies are tracked in `requirements.txt`. It currently installs
 [`qrcode[pil]`](https://pypi.org/project/qrcode/) for `qrgenerator.py`; `mass_print.py`
 only needs the Python standard library on Windows. Install everything with:
