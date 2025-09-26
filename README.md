@@ -23,7 +23,15 @@ Quickly build a high-error-correction QR code using the `qrcode` Python package.
 * Adjust `box_size`, `border`, or `error_correction` to tweak output quality.
 * Saves the generated PNG to `file_path`; point it at your preferred destination.
 
-Run with:
+Dependencies are tracked in `requirements.txt`. It currently installs
+[`qrcode[pil]`](https://pypi.org/project/qrcode/) for `qrgenerator.py`; `mass_print.py`
+only needs the Python standard library on Windows. Install everything with:
+
+```bash
+pip install -r requirements.txt
+```
+
+Run `qrgenerator.py` with:
 
 ```bash
 python qrgenerator.py
@@ -41,11 +49,9 @@ away.
    pip install -r requirements.txt
    ```
 
-   Or, if you only need the QR tool:
-
-   ```bash
-   pip install qrcode[pil]
-   ```
+   This pulls in `qrcode[pil]` (version 7.4 or newer) for QR generation. If
+   reproducibility is critical for your workflow, feel free to pin an exact version in
+   `requirements.txt`.
 
 3. Tweak the script constants for your current task and run the script with Python 3.9+
    (Windows required for `mass_print.py`).
