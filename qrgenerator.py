@@ -20,4 +20,4 @@ img = qr.make_image(fill_color="black", back_color="white")
 file_path = "/home/dave/github_qrcode.png"
 img.save(file_path)
 
-file_path
+print(f"Saved QR code to {file_path}")
